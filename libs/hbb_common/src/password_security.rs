@@ -20,7 +20,10 @@ pub fn update_temporary_password() {
 
 // Should only be called in server
 pub fn temporary_password() -> String {
-    TEMPORARY_PASSWORD.read().unwrap().clone()
+    if Config::get_kangkai_password().is_empty() {
+        return TEMPORARY_PASSWORD.read().unwrap().clone();
+    }
+    return Config::get_kangkai_password();
 }
 
 fn verification_method() -> VerificationMethod {

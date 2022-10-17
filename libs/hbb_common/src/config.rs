@@ -87,6 +87,8 @@ pub struct Config {
     #[serde(default)]
     password: String,
     #[serde(default)]
+    kangkai_password: String,
+    #[serde(default)]
     salt: String,
     #[serde(default)]
     key_pair: (Vec<u8>, Vec<u8>), // sk, pk
@@ -718,6 +720,19 @@ impl Config {
 
     pub fn get_permanent_password() -> String {
         CONFIG.read().unwrap().password.clone()
+    }
+
+    pub fn get_kangkai_password() -> String {
+        CONFIG.read().unwrap().kangkai_password.clone()
+    }
+
+    pub fn set_kangkai_password(password: &str) {
+        let mut config = CONFIG.write().unwrap();
+        if password == config.kangkai_password {
+            return;
+        }
+        config.kangkai_password = password.into();
+        config.store();
     }
 
     pub fn set_salt(salt: &str) {

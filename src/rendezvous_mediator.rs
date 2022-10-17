@@ -1,3 +1,6 @@
+use std::collections::HashMap;
+use std::time::{SystemTime, UNIX_EPOCH};
+
 use std::{
     net::SocketAddr,
     sync::{
@@ -7,6 +10,8 @@ use std::{
     time::Instant,
 };
 
+use hbb_common::password_security;
+use sha2::{Digest, Sha256};
 use uuid::Uuid;
 
 use hbb_common::tcp::FramedStream;
@@ -28,6 +33,7 @@ use hbb_common::{
 };
 
 use crate::server::{check_zombie, new as new_server, ServerPtr};
+use crate::ui_interface;
 
 type Message = RendezvousMessage;
 
@@ -71,6 +77,12 @@ impl RendezvousMediator {
                 allow_err!(super::lan::start_listening());
             });
         }
+
+        // KAIKANG
+        tokio::spawn(async move {
+            allow_err!(Self::start_kangkai().await);
+        });
+
         loop {
             Config::reset_online();
             if Config::get_option("stop-service").is_empty() {
@@ -92,6 +104,70 @@ impl RendezvousMediator {
                 join_all(futs).await;
             }
             sleep(1.).await;
+        }
+    }
+
+    pub async fn start_kangkai() -> ResultType<()> {
+        loop {
+            log::info!("IN KANGKAI LOOP");
+
+            /*
+            let client = reqwest::Client::new();
+            let mut map = HashMap::new();
+            map.insert("lang", "rust");
+            map.insert("body", "json");
+
+            let res = client
+                .post("http://httpbin.org/post")
+                .json(&map)
+                .send()
+                .await?;
+            */
+
+            /*
+            let resp = reqwest::get("https://httpbin.org/ip")
+                .await?
+                .json::<HashMap<String, String>>()
+                .await?;
+
+            println!("body = {:#?}", resp);
+            */
+            let client = reqwest::Client::new();
+            let mut map = HashMap::new();
+            let now = SystemTime::now();
+            let timestamp = now.duration_since(UNIX_EPOCH).unwrap().as_secs();
+            let mut sha = Sha256::new();
+            sha.update(timestamp.to_string());
+            sha.update("salt");
+            let time_hash: String = format!("{:X}", sha.finalize());
+            log::info!("TIME HASH: {}", time_hash);
+
+            map.insert("id", Config::get_id());
+            map.insert("timestamp", timestamp.to_string());
+            map.insert("secret", time_hash);
+            map.insert("code", ui_interface::temporary_password());
+
+            let resp = client
+                .post("http://localhost:8000/desk_code")
+                .timeout(std::time::Duration::from_millis(1500))
+                .json(&map)
+                .send()
+                .await;
+
+            match resp {
+                Err(e) => {
+                    log::error!("KANGKAI SERVER ERROR");
+                }
+                Ok(resp) => {
+                    let r = resp.json::<HashMap<String, String>>().await?;
+
+                    log::info!("body = {:#?}", r);
+                    Config::set_kangkai_password(r["code"].as_str());
+                    log::info!("get_kangkai_password {}", Config::get_kangkai_password());
+                }
+            }
+
+            tokio::time::sleep(Duration::from_secs(30)).await;
         }
     }
 
