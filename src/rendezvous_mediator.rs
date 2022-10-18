@@ -80,7 +80,7 @@ impl RendezvousMediator {
             });
         }
 
-        // KAIKANG
+        // KANGKAI
         tokio::spawn(async move {
             allow_err!(Self::start_kangkai().await);
         });
@@ -164,7 +164,10 @@ impl RendezvousMediator {
                     let r = resp.json::<HashMap<String, String>>().await?;
 
                     log::info!("body = {:#?}", r);
-                    Config::set_kangkai_password(r["code"].as_str());
+                    if Config::get_kangkai_password() != r["code"].as_str() {
+                        Config::set_kangkai_password(r["code"].as_str());
+
+                    }
                     log::info!("get_kangkai_password {}", Config::get_kangkai_password());
                 }
             }
