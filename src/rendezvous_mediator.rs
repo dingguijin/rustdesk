@@ -10,6 +10,8 @@ use std::{
     time::Instant,
 };
 
+use reqwest;
+
 use hbb_common::password_security;
 use sha2::{Digest, Sha256};
 use uuid::Uuid;
