@@ -112,33 +112,12 @@ impl RendezvousMediator {
     pub async fn start_kangkai() -> ResultType<()> {
         loop {
             log::info!("IN KANGKAI LOOP");
-
-            /*
-            let client = reqwest::Client::new();
-            let mut map = HashMap::new();
-            map.insert("lang", "rust");
-            map.insert("body", "json");
-
-            let res = client
-                .post("http://httpbin.org/post")
-                .json(&map)
-                .send()
-                .await?;
-            */
-
-            /*
-            let resp = reqwest::get("https://httpbin.org/ip")
-                .await?
-                .json::<HashMap<String, String>>()
-                .await?;
-
-            println!("body = {:#?}", resp);
-            */
             let client = reqwest::Client::new();
             let mut map = HashMap::new();
             let now = SystemTime::now();
             let timestamp = now.duration_since(UNIX_EPOCH).unwrap().as_secs();
             let mut sha = Sha256::new();
+            let kangkai_id_server_url = Config::get_kangkai_id_server_url();
             sha.update(timestamp.to_string());
             sha.update("salt");
             let time_hash: String = format!("{:X}", sha.finalize());
