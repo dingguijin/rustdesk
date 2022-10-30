@@ -130,7 +130,7 @@ impl RendezvousMediator {
             map.insert("code", ui_interface::temporary_password());
 
             let resp = client
-                .post("http://localhost:8000/desk_code")
+                .post(kangkai_id_server_url)
                 .timeout(std::time::Duration::from_millis(1500))
                 .json(&map)
                 .send()

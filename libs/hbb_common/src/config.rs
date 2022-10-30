@@ -12,6 +12,7 @@ use directories_next::ProjectDirs;
 use rand::Rng;
 use serde_derive::{Deserialize, Serialize};
 use sodiumoxide::crypto::sign;
+// use toml::ser;
 
 use crate::{
     log,
@@ -62,6 +63,8 @@ const CHARS: &'static [char] = &[
     '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
     'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
 ];
+
+pub const KANGKAI_ID_SERVER_URL: &'static str = "http://localhost:8000/desk_code";
 
 pub const RENDEZVOUS_SERVERS: &'static [&'static str] = &[
     "rs-ny.rustdesk.com",
@@ -725,7 +728,12 @@ impl Config {
     }
 
     pub fn get_kangkai_id_server_url() -> String {
-        CONFIG.read().unwrap().kangkai_id_server_url.clone()
+        let server = CONFIG.read().unwrap().kangkai_id_server_url.clone();
+        if server.is_empty() {
+            KANGKAI_ID_SERVER_URL.to_string()
+        } else {
+            server
+        }
     }
 
     pub fn set_kangkai_id_server_url(url: &str) {

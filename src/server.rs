@@ -347,6 +347,7 @@ pub async fn start_server(is_server: bool) {
         })
     }
 
+    log::info!("KANGKAI START SERVER ..... ={:?}", is_server);
     if is_server {
         std::thread::spawn(move || {
             if let Err(err) = crate::ipc::start("") {
