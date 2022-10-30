@@ -82,9 +82,10 @@ impl RendezvousMediator {
         }
 
         // KANGKAI
-        tokio::spawn(async move {
+        /* tokio::spawn(async move {
             allow_err!(Self::start_kangkai().await);
         });
+        */
 
         loop {
             Config::reset_online();

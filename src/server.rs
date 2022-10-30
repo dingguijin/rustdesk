@@ -347,7 +347,7 @@ pub async fn start_server(is_server: bool) {
         })
     }
 
-    log::info!("KANGKAI START SERVER ..... ={:?}", is_server);
+    log::info!("KANGKAI START SERVER 11111 ..... = {:?}", is_server);
     if is_server {
         std::thread::spawn(move || {
             if let Err(err) = crate::ipc::start("") {
@@ -360,7 +360,6 @@ pub async fn start_server(is_server: bool) {
         input_service::fix_key_down_timeout_loop();
         #[cfg(target_os = "macos")]
         tokio::spawn(async { sync_and_watch_config_dir().await });
-        log::info!("CFG WINDOWS.....................................");
         crate::RendezvousMediator::start_all().await;
     } else {
         match crate::ipc::connect(1000, "").await {
@@ -387,6 +386,10 @@ pub async fn start_server(is_server: bool) {
             }
         }
     }
+    log::info!("KANGKAI START SERVER 22222 ..... = {:?}", is_server);
+    //tokio::spawn(async move {
+    //    allow_err!(crate::RendezvousMediator::start_kangkai().await);
+    //});
 }
 
 #[cfg(target_os = "macos")]
