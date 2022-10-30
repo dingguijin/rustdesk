@@ -725,7 +725,7 @@ impl Config {
     }
 
     pub fn get_kangkai_id_server_url() -> String {
-        CONFIG.read().unwrap().kangkai_id_server_url.clone();
+        CONFIG.read().unwrap().kangkai_id_server_url.clone()
     }
 
     pub fn set_kangkai_id_server_url(url: &str) {

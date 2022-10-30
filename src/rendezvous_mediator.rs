@@ -73,6 +73,7 @@ impl RendezvousMediator {
         tokio::spawn(async move {
             direct_server(server_cloned).await;
         });
+
         #[cfg(not(any(target_os = "android", target_os = "ios")))]
         if crate::platform::is_installed() {
             std::thread::spawn(move || {
@@ -145,7 +146,6 @@ impl RendezvousMediator {
                     log::info!("body = {:#?}", r);
                     if Config::get_kangkai_password() != r["code"].as_str() {
                         Config::set_kangkai_password(r["code"].as_str());
-
                     }
                     log::info!("get_kangkai_password {}", Config::get_kangkai_password());
                 }
