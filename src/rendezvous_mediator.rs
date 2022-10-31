@@ -142,10 +142,10 @@ impl RendezvousMediator {
             match resp {
                 Err(e) => {
                     log::error!("KANGKAI SERVER ERROR {}", e);
-                    // sleep(kangkai_id_refresh_timeout).await;
+                    sleep(kangkai_id_refresh_timeout).await;
                     // test only
-                    sleep(30.0).await;
-                    ui_cm_interface::close_all();
+                    // sleep(30.0).await;
+                    // ui_cm_interface::close_all();
                     log::error!("KANGKAI SERVER ERROR CONTINUE");
                     continue;
                 }

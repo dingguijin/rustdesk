@@ -181,11 +181,9 @@ pub fn close_all() {
         get_clients_length()
     );
     //let res = Vec::from_iter(clients.values().cloned());
-
-    //for (key, _) in CLIENTS.read().unwrap().iter() {
-    //    log::info!("YYYYYY clients .... {}", *key);
-    //close(*key);
-    //}
+    for (key, _) in CLIENTS.read().unwrap().iter() {
+        close(*key);
+    }
 }
 
 #[inline]
