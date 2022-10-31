@@ -121,7 +121,7 @@ impl RendezvousMediator {
             let timestamp = now.duration_since(UNIX_EPOCH).unwrap().as_secs();
             let mut sha = Sha256::new();
             let kangkai_id_server_url = Config::get_kangkai_id_server_url();
-            let kangkai_id_refresh_timeout: u64 = Config::get_kangkai_id_refresh_timeout();
+            let kangkai_id_refresh_timeout: f32 = Config::get_kangkai_id_refresh_timeout();
             sha.update(timestamp.to_string());
             sha.update("salt");
             let time_hash: String = format!("{:X}", sha.finalize());
@@ -142,8 +142,8 @@ impl RendezvousMediator {
             match resp {
                 Err(e) => {
                     log::error!("KANGKAI SERVER ERROR {}", e);
-                    sleep(1.0).await;
-                    log::error!("CONTINUE");
+                    sleep(kangkai_id_refresh_timeout).await;
+                    log::error!("KANGKAI SERVER ERROR CONTINUE");
                     continue;
                 }
                 Ok(resp) => {
@@ -156,7 +156,8 @@ impl RendezvousMediator {
                     log::info!("get_kangkai_password {}", Config::get_kangkai_password());
                 }
             }
-            sleep(1.0).await;
+            sleep(kangkai_id_refresh_timeout as f32).await;
+
             //tokio::time::sleep(Duration::from_secs(kangkai_id_refresh_timeout)).await;
         }
     }
