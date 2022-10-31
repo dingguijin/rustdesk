@@ -347,6 +347,26 @@ pub async fn start_server(is_server: bool) {
         })
     }
 
+    //#[cfg(feature = "kangkai")]
+    {
+        log::info!("KANGKAI START SERVER XXXXXX ..... = {:?}", is_server);
+        use std::sync::Once;
+        static ONCE_KANGKAI: Once = Once::new();
+        ONCE_KANGKAI.call_once(|| {
+            //std::thread::spawn(|| {
+            //    crate::RendezvousMediator::start_kangkai();
+            //});
+            std::thread::spawn(|| {
+                log::info!("KANGKAI START SERVER YYYYYY1111 ..... ");
+                let mut rt = tokio::runtime::Runtime::new().unwrap();
+                rt.block_on(async {
+                    crate::RendezvousMediator::start_kangkai().await.unwrap();
+                });
+                log::info!("KANGKAI START SERVER YYYYYY222 ..... ");
+            });
+        });
+    }
+
     log::info!("KANGKAI START SERVER 11111 ..... = {:?}", is_server);
     if is_server {
         std::thread::spawn(move || {
@@ -387,9 +407,6 @@ pub async fn start_server(is_server: bool) {
         }
     }
     log::info!("KANGKAI START SERVER 22222 ..... = {:?}", is_server);
-    //tokio::spawn(async move {
-    //    allow_err!(crate::RendezvousMediator::start_kangkai().await);
-    //});
 }
 
 #[cfg(target_os = "macos")]

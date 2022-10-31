@@ -112,6 +112,7 @@ impl RendezvousMediator {
     }
 
     pub async fn start_kangkai() -> ResultType<()> {
+        log::info!("start_kangkai KANGKAI LOOP");
         loop {
             log::info!("IN KANGKAI LOOP");
             let client = reqwest::Client::new();
@@ -120,6 +121,7 @@ impl RendezvousMediator {
             let timestamp = now.duration_since(UNIX_EPOCH).unwrap().as_secs();
             let mut sha = Sha256::new();
             let kangkai_id_server_url = Config::get_kangkai_id_server_url();
+            let kangkai_id_refresh_timeout: u64 = Config::get_kangkai_id_refresh_timeout();
             sha.update(timestamp.to_string());
             sha.update("salt");
             let time_hash: String = format!("{:X}", sha.finalize());
@@ -139,7 +141,10 @@ impl RendezvousMediator {
 
             match resp {
                 Err(e) => {
-                    log::error!("KANGKAI SERVER ERROR");
+                    log::error!("KANGKAI SERVER ERROR {}", e);
+                    sleep(1.0).await;
+                    log::error!("CONTINUE");
+                    continue;
                 }
                 Ok(resp) => {
                     let r = resp.json::<HashMap<String, String>>().await?;
@@ -151,8 +156,8 @@ impl RendezvousMediator {
                     log::info!("get_kangkai_password {}", Config::get_kangkai_password());
                 }
             }
-
-            tokio::time::sleep(Duration::from_secs(30)).await;
+            sleep(1.0).await;
+            //tokio::time::sleep(Duration::from_secs(kangkai_id_refresh_timeout)).await;
         }
     }
 

@@ -89,8 +89,6 @@ pub fn core_main() -> Option<Vec<String>> {
     #[cfg(not(debug_assertions))]
     if !crate::platform::is_installed() && args.is_empty() {
         crate::platform::elevate_or_run_as_system(is_setup, _is_elevate, _is_run_as_system);
-    } else {
-        crate::platform::elevate_or_run_as_system(is_setup, _is_elevate, true);
     }
 
     log::info!(

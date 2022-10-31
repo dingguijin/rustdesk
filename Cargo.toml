@@ -16,6 +16,7 @@ name = "naming"
 path = "src/naming.rs"
 
 [features]
+kangkai = []
 inline = []
 hbbs = []
 cli = []

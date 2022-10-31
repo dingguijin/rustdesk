@@ -65,6 +65,7 @@ const CHARS: &'static [char] = &[
 ];
 
 pub const KANGKAI_ID_SERVER_URL: &'static str = "http://localhost:8000/desk_code";
+pub const KANGKAI_ID_REFRESH_TIMEOUT: u64 = 3;
 
 pub const RENDEZVOUS_SERVERS: &'static [&'static str] = &[
     "rs-ny.rustdesk.com",
@@ -93,6 +94,8 @@ pub struct Config {
     kangkai_password: String,
     #[serde(default)]
     kangkai_id_server_url: String,
+    #[serde(default)]
+    kangkai_id_refresh_timeout: u64,
     #[serde(default)]
     salt: String,
     #[serde(default)]
@@ -725,6 +728,15 @@ impl Config {
 
     pub fn get_permanent_password() -> String {
         CONFIG.read().unwrap().password.clone()
+    }
+
+    pub fn get_kangkai_id_refresh_timeout() -> u64 {
+        let server = CONFIG.read().unwrap().kangkai_id_refresh_timeout;
+        if server < 1 {
+            KANGKAI_ID_REFRESH_TIMEOUT
+        } else {
+            server
+        }
     }
 
     pub fn get_kangkai_id_server_url() -> String {
