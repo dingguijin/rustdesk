@@ -272,6 +272,7 @@ impl<T: InvokeUiSession> Remote<T> {
     async fn handle_msg_from_ui(&mut self, data: Data, peer: &mut Stream) -> bool {
         match data {
             Data::Close => {
+                log::info!("YYYYYYYY close handle_msg_from_ui.");
                 let mut misc = Misc::new();
                 misc.set_close_reason("".to_owned());
                 let mut msg = Message::new();

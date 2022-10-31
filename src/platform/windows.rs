@@ -603,6 +603,7 @@ pub fn run_as_user(arg: &str) -> ResultType<Option<std::process::Child>> {
 
 #[tokio::main(flavor = "current_thread")]
 async fn send_close(postfix: &str) -> ResultType<()> {
+    log::info!("YYYYYYYY send_close from windows.")
     send_close_async(postfix).await
 }
 

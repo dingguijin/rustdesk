@@ -156,6 +156,7 @@ impl<T: InvokeUiCM> ConnectionManager<T> {
 
 #[inline]
 pub fn check_click_time(id: i32) {
+    log::info!("ZZZZZZZZZ check_click_time ......... {}", id);
     if let Some(client) = CLIENTS.read().unwrap().get(&id) {
         allow_err!(client.tx.send(Data::ClickTime(0)));
     };
@@ -174,15 +175,27 @@ pub fn authorize(id: i32) {
     };
 }
 
-#[inline]
 pub fn close_all() {
-    for (_, value) in CLIENTS.read().unwrap().iter() {
-        allow_err!(value.tx.send(Data::Close));
-    }
+    log::info!(
+        "YYYYYYY ui_cm_interface close all.......{}",
+        get_clients_length()
+    );
+    //let res = Vec::from_iter(clients.values().cloned());
+
+    //for (key, _) in CLIENTS.read().unwrap().iter() {
+    //    log::info!("YYYYYY clients .... {}", *key);
+    //close(*key);
+    //}
 }
 
 #[inline]
 pub fn close(id: i32) {
+    log::info!("YYYYYYY ui_cm_interface close id {}", id);
+    log::info!(
+        "YYYYYYY ui_cm_interface close.......{}",
+        get_clients_length()
+    );
+
     if let Some(client) = CLIENTS.read().unwrap().get(&id) {
         allow_err!(client.tx.send(Data::Close));
     };

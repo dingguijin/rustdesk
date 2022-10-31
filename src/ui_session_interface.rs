@@ -1026,6 +1026,7 @@ impl<T: InvokeUiSession> Session<T> {
     }
 
     pub fn close(&self) {
+        log::info!("YYYYYYYY close from ui_session_interface.");
         self.send(Data::Close);
     }
 

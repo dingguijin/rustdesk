@@ -94,6 +94,7 @@ impl SciterConnectionManager {
     }
 
     fn check_click_time(&mut self, id: i32) {
+        log::info!("YYYYYYYYY cm check click time .......... {}", id);
         crate::ui_cm_interface::check_click_time(id);
     }
 
