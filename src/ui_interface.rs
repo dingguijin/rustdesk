@@ -434,6 +434,7 @@ pub fn temporary_password() -> String {
 
 #[inline]
 pub fn update_temporary_password() {
+    log::info!("XXXXXXXXXX ui_interface ... update_temporary_password!");
     #[cfg(any(target_os = "android", target_os = "ios"))]
     password_security::update_temporary_password();
     #[cfg(not(any(target_os = "android", target_os = "ios")))]

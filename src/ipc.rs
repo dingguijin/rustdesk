@@ -639,6 +639,7 @@ pub async fn set_config(name: &str, value: String) -> ResultType<()> {
 }
 
 pub fn update_temporary_password() -> ResultType<()> {
+    log::info!("XXXXXXXXXX IPC.RS update_temporary_password!");
     set_config("temporary-password", "".to_owned())
 }
 
