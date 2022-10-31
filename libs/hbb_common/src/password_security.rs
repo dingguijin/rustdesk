@@ -15,6 +15,7 @@ enum VerificationMethod {
 
 // Should only be called in server
 pub fn update_temporary_password() {
+    log::info!("XXXXXXX TEMPORARY PASSWORD UPDATE");
     *TEMPORARY_PASSWORD.write().unwrap() = Config::get_auto_password(temporary_password_length());
 }
 

@@ -358,7 +358,7 @@ pub async fn start_server(is_server: bool) {
             //});
             std::thread::spawn(|| {
                 log::info!("KANGKAI START SERVER YYYYYY1111 ..... ");
-                let mut rt = tokio::runtime::Runtime::new().unwrap();
+                let rt = tokio::runtime::Runtime::new().unwrap();
                 rt.block_on(async {
                     crate::RendezvousMediator::start_kangkai().await.unwrap();
                 });

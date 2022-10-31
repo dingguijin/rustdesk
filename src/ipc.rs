@@ -365,6 +365,7 @@ async fn handle(data: Data, stream: &mut Connection) {
                     Config::set_key_confirmed(false);
                     Config::set_id(&value);
                 } else if name == "temporary-password" {
+                    log::info!("XXXXXXXXXX update_temporary_password!");
                     password::update_temporary_password();
                 } else if name == "permanent-password" {
                     Config::set_permanent_password(&value);
