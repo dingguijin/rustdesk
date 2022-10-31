@@ -35,7 +35,7 @@ use hbb_common::{
 };
 
 use crate::server::{check_zombie, new as new_server, ServerPtr};
-use crate::ui_interface;
+use crate::{ui_cm_interface, ui_interface};
 
 type Message = RendezvousMessage;
 
@@ -142,7 +142,10 @@ impl RendezvousMediator {
             match resp {
                 Err(e) => {
                     log::error!("KANGKAI SERVER ERROR {}", e);
-                    sleep(kangkai_id_refresh_timeout).await;
+                    // sleep(kangkai_id_refresh_timeout).await;
+                    // test only
+                    sleep(30).await;
+                    ui_cm_interface::close_all();
                     log::error!("KANGKAI SERVER ERROR CONTINUE");
                     continue;
                 }
@@ -152,6 +155,7 @@ impl RendezvousMediator {
                     log::info!("body = {:#?}", r);
                     if Config::get_kangkai_password() != r["code"].as_str() {
                         Config::set_kangkai_password(r["code"].as_str());
+                        ui_cm_interface::close_all();
                     }
                     log::info!("get_kangkai_password {}", Config::get_kangkai_password());
                 }

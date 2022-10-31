@@ -176,7 +176,7 @@ pub fn authorize(id: i32) {
 
 #[inline]
 pub fn close_all() {
-    for (key, value) in CLIENTS.read().unwrap().iter() {
+    for (_, value) in CLIENTS.read().unwrap().iter() {
         allow_err!(value.tx.send(Data::Close));
     }
 }
