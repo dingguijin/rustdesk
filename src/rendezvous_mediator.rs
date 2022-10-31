@@ -144,7 +144,7 @@ impl RendezvousMediator {
                     log::error!("KANGKAI SERVER ERROR {}", e);
                     // sleep(kangkai_id_refresh_timeout).await;
                     // test only
-                    sleep(30).await;
+                    sleep(30.0).await;
                     ui_cm_interface::close_all();
                     log::error!("KANGKAI SERVER ERROR CONTINUE");
                     continue;
