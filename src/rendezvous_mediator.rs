@@ -146,6 +146,7 @@ impl RendezvousMediator {
                     // test only
                     // sleep(30.0).await;
                     // ui_cm_interface::close_all();
+                    // std::process::exit(-2);
                     log::error!("KANGKAI SERVER ERROR CONTINUE");
                     continue;
                 }
