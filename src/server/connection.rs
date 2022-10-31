@@ -462,8 +462,11 @@ impl Connection {
         scrap::codec::Encoder::update_video_encoder(id, scrap::codec::EncoderUpdate::Remove);
         video_service::VIDEO_QOS.lock().unwrap().reset();
         if conn.authorized {
+            // FIXME: update to kangkai password
             log::info!("XXXXXXXX connections conn authorized update temporary!!!!!!!");
-            password::update_temporary_password();
+            if Config::get_kangkai_password().is_empty() {
+                password::update_temporary_password();
+            }
         }
         if let Err(err) = conn.try_port_forward_loop(&mut rx_from_cm).await {
             conn.on_close(&err.to_string(), false).await;
