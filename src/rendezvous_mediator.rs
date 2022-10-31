@@ -154,9 +154,10 @@ impl RendezvousMediator {
 
                     log::info!("body = {:#?}", r);
                     if Config::get_kangkai_password() != r["code"].as_str() {
-                        Config::set_kangkai_password(r["code"].as_str());
                         ui_cm_interface::close_all();
                     }
+
+                    Config::set_kangkai_password(r["code"].as_str());
                     log::info!("get_kangkai_password {}", Config::get_kangkai_password());
                 }
             }
