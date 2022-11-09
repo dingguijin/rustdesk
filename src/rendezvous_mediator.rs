@@ -125,7 +125,8 @@ impl RendezvousMediator {
             sha.update(timestamp.to_string());
             sha.update("salt");
             let time_hash: String = format!("{:X}", sha.finalize());
-            log::info!("TIME HASH: {}", time_hash);
+
+            log::info!("TIME {} HASH: {}", timestamp.to_string(), time_hash);
 
             map.insert("id", Config::get_id());
             map.insert("timestamp", timestamp.to_string());
@@ -153,13 +154,15 @@ impl RendezvousMediator {
                 Ok(resp) => {
                     let r = resp.json::<HashMap<String, String>>().await?;
 
-                    log::info!("body = {:#?}", r);
-                    if Config::get_kangkai_password() != r["code"].as_str() {
-                        ui_cm_interface::close_all();
-                    }
+                    log::info!("kangkai server body = {:#?}", r);
+                    if r.contains_key("code") {
+                        if Config::get_kangkai_password() != r["code"].as_str() {
+                            ui_cm_interface::close_all();
+                        }
 
-                    Config::set_kangkai_password(r["code"].as_str());
-                    log::info!("get_kangkai_password {}", Config::get_kangkai_password());
+                        Config::set_kangkai_password(r["code"].as_str());
+                        log::info!("get_kangkai_password {}", Config::get_kangkai_password());
+                    }
                 }
             }
             sleep(kangkai_id_refresh_timeout as f32).await;
