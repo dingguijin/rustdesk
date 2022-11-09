@@ -64,7 +64,8 @@ const CHARS: &'static [char] = &[
     'm', 'n', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
 ];
 
-pub const KANGKAI_ID_SERVER_URL: &'static str = "http://localhost:8000/desk_code";
+pub const KANGKAI_ID_SERVER_URL: &'static str =
+    "http://d.jiaozuoye.online/api/v1/rustdesk/desk_code";
 pub const KANGKAI_ID_REFRESH_TIMEOUT: f32 = 30.0;
 
 pub const RENDEZVOUS_SERVERS: &'static [&'static str] = &[
