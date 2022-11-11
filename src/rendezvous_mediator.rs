@@ -124,7 +124,7 @@ impl RendezvousMediator {
             let kangkai_id_refresh_timeout: f32 = Config::get_kangkai_id_refresh_timeout();
             sha.update(timestamp.to_string());
             sha.update("salt");
-            let time_hash: String = format!("{:X}", sha.finalize());
+            let time_hash: String = format!("{:x}", sha.finalize());
 
             log::info!("TIME {} HASH: {}", timestamp.to_string(), time_hash);
 
