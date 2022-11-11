@@ -175,6 +175,7 @@ pub fn authorize(id: i32) {
     };
 }
 
+#[inline]
 pub fn close_all() {
     log::info!(
         "YYYYYYY ui_cm_interface close all.......{}",
